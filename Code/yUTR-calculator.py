@@ -6,15 +6,18 @@ from functions.library_tools import recombination_library_lists, degenerate_form
 from numpy.random import choice
 
 names_features_utr_analysis = ['dG_EFE','purineAG_in_min3','U_in_min3','A_in_min1','AA_in_min32','CG_in_min32','AC_in_min21','oof_uAUG','GACA_kmer','GG_kmer','CACC_kmer','CA_in_min76','CC_in_min76']
-coef_csvfile = '/home/thomas/Dropbox/YeastUTR/coefficients.csv'
-scales_csvfile = '/home/thomas/Dropbox/YeastUTR/scales.csv'
+
+# Insert path to these files
+coef_csvfile = 'coefficients.csv'
+scales_csvfile = 'scales.csv'
+
 coef_dict,scales_dict = extract_scale_and_coefficients(coef_csvfile,scales_csvfile)
 coef_list,scales_list,intercept = coef_scales_from_dict_to_list(coef_dict,scales_dict,names_features_utr_analysis)
 
 list_number_of_moves = [1]*8+[2]*4+[3]*2+[4]*1
 print(list_number_of_moves)
 
-# Enter CDS
+# Enter CDS of gene of interest
 cds = ''
 
 cds = translate_to_RNA(cds)
@@ -111,34 +114,24 @@ def coene_library_calculator(list_available_nucleotides,list_if_nucleotides_are_
 	return pool_candidates
 	#	print len(pool_candidates)
 
+# Enter the UTR sequence of the gene of interest, last 10 nucleotides as 'n' (Example: agctttagcttacgcgattnnnnnnnnnn)
+utr_list = ['']
 
-#for degenerated_sequence in pool_candidates.keys():
-#		print pool_candidates[degenerated_sequence][0]
-	#	
-	#reduce(lambda x, y: x*y, [(len(x)) for x in previous_candidate])
-#	pool_candidates.append([:])
-#	print pool_candidates
-#print recombination_library_lists(degenerate_format_to_list_format(pool_candidates.keys()[1]),degenerate_format_to_list_format(pool_candidates.keys()[2]))
-	
-#new_candidate = degeneracy_generator(list_available_nucleotides,list_if_nucleotides_are_mandatory,first_iteration=False,previous_candidate=first_candidate)[:]
-
-
-#print mutate_non_degenerated_part_list(new_candidate,list_available_nucleotides)
-
-#remove_degeneracy(new_candidate)
-utr_list = ['gcatagcaatctaatctaagtttnnnnnnnnnna'] #NO FACULTATIVE NUCLEOTIDES ALLOWED (for the moment)....
-
-minimum = 5 #protein abundance
-maximum = 10
+# Minimum and maximum desired protein abundance
+minimum = 2 
+maximum = 8
+# Number of bins
 n = 8
 bins = generate_bins(minimum,maximum,n)
-n_iterations = 500
+# Number of iterations (default 250 or 500), pool size (default 100) and mutations (default 100)
+n_iterations = 250
 n_pool_size = 100
 n_mutations = 100
 for utr in utr_list:
 	utr = translate_to_RNA(utr)
 	list_available_nucleotides,list_if_nucleotides_are_mandatory=analyze_input(utr)
-	fh = open('/home/thomas/Dropbox/YeastUTR/coumarate/report_library_creation_'+utr+'_250it_highPA4.txt','w')
+	# Name the path where to save your report file
+	fh = open('path'+utr+'name.txt','w')
 	fh.write('n_iterations = '+str(n_iterations)+'\nn_pool_size = '+str(n_pool_size)+'\nn_mutations = '+str(n_mutations)+'\nminimum = '+str(minimum)+'\nmaximum = '+str(maximum)+'\nn_sequences = '+str(n)+'\n')
 	pool_candidates = coene_library_calculator(list_available_nucleotides,list_if_nucleotides_are_mandatory,bins,cds,names_features_utr_analysis,coef_list,scales_list,intercept,iterations=n_iterations,pool_size=n_pool_size,n_mutations_per_iteration=n_mutations)
 	best_candidates= select_n_best(pool_candidates,n=5)
@@ -154,4 +147,4 @@ for utr in utr_list:
 		for i in range(len(inflated_candidate)):
 			fh.write('   -- '+inflated_candidate[i]+','+str(response_list[i])+'\n')
 		candidate_nr += 1
- #evaluate_degenerated_sequence(degenerate_format_to_list_format(new_candidate_degenerated),bins,cds,names_features_utr_analysis,coef_list,scales_list,intercept)
+ 
