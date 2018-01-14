@@ -10,6 +10,9 @@ To get started, all python files and calculated data files should be stored in t
 ## Python files
 
 PLS-regression.R: R code used to develop the PLS regression model
-UTR_feature_calculation.py: Python code used to determine the 13 features in the Dvir UTR data set
-yUTR-calculator.py: Python code to develop novel 5'UTRs with a predictive outcome of protein abundances
-yUTR-calculator_reverse_engineering.py: Python code to calculate the protein abundance from a given 5'UTR sequence
+
+(UTR_feature_calculation.py): Python code used to determine the 13 features in the Dvir UTR data set
+
+(yUTR-calculator.py): Python code to develop novel 5'UTRs with a predictive outcome of protein abundances
+
+(yUTR-calculator_reverse_engineering.py): Python code to calculate the protein abundance from a given 5'UTR sequence
