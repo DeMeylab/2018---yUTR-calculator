@@ -11,7 +11,7 @@ To get started, all python files and calculated data files should be stored in t
 
 All calculations were performed on a normal laptop (*i.e.* Dell Latitude). Depending on the number of iterations chosen in the yUTR-calculator, calculations can take 1-3 hours. For secondary structure determination, the ViennaRNA Package must be properly installed on your computer. All info can be found [here](https://www.tbi.univie.ac.at/RNA/).
 
-## Python files
+## Code
 
 PLS-regression.R: R code used to develop the PLS regression model
 
