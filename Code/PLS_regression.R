@@ -3,7 +3,6 @@ if (!require("pls")) {
   install.packages("pls")
   library(pls)
 }
-
 if (!require("ggplot2")) {
   install.packages("ggplot2")
   library(ggplot2)
@@ -47,7 +46,6 @@ split_vector_in_equal_parts<-function(dataframe,nparts,seed){
   return(output_list)
 }
 
-
 create_interaction_terms<-function(X){
   X_2<-X
   for(col in 1:ncol(X)){
@@ -58,7 +56,7 @@ create_interaction_terms<-function(X){
   return(X_2)
 }
 
-####### Part of the script used to perform 5-fold cross validation, but not used for the actual model
+#######>>>>> Part of the script used to perform 5-fold cross validation, but not used for the actual model
 
 #path name where you saved 'output_analysis'
 #csv='/output_analysis.csv'
@@ -103,8 +101,8 @@ create_interaction_terms<-function(X){
 #  data_opslag = rbind(data_opslag,c(r2_training,as.numeric(coef_data[2:14,"coefficient"])/as.numeric(scale_data[,"scale"])))
 #}
 #for(column_i in 1:ncol(data_opslag[2:6,])){
-  col_i = data_opslag[2:6,column_i]
-  print(paste(mean(col_i),' = ',sd(col_i),' : ',sd(col_i)/abs(mean(col_i))))  
+#  col_i = data_opslag[2:6,column_i]
+#  print(paste(mean(col_i),' = ',sd(col_i),' : ',sd(col_i)/abs(mean(col_i))))  
 #}
 
 #pdf(".../pls_plots.pdf")
@@ -130,7 +128,7 @@ create_interaction_terms<-function(X){
 #nse_test = NSE(data.frame(test_predict)[,1],test_set[,1])
 #r2_test=summary(lm(data.frame(test_predict)[,1]~test_set[,1]))$r.squared
 
-########
+########<<<<<
 
 ######## Part of the script used to perform the actual PLS-regression
 
@@ -184,56 +182,12 @@ print(test_ggplot)
 dev.off()
 
 
-#LETS TRY MLR
-
-
-
-mlr_training = lm(Y~dG_EFE+purineAG_in_min3+U_in_min3+A_in_min1+AA_in_min32+CG_in_min32+AC_in_min21+oof_uAUG+GACA_kmer+GG_kmer+CACC_kmer+CA_in_min76+CC_in_min76,data=training_set)
-summary(mlr_training)
-test_predict_mlr=predict(mlr_training,test_set)
-test_x = test_predict_mlr
-test_y = test_set[,1]
-test_mlr = data.frame(cbind(test_x,test_y))
-rownames(test_mlr)<-1:nrow(test_mlr)
-colnames(test_mlr)<-c("Predicted","Experimental")
-nse_test_mlr = NSE(test_mlr[,1],test_mlr[,2])
-r2_test_mlr=summary(lm(test_mlr[,1]~test_mlr[,2]))$r.squared
-predictors = length(coefficients(mlr_training))-1
-
-test_ggplot = ggplot(test_mlr,aes(x=Predicted,y=Experimental))+
-  geom_point()  + geom_abline(intercept = 0, slope = 1)+
-  ggtitle(paste("NSE =",round(nse_test_mlr,4),"R2 =",round(r2_test_mlr,4),"Preds =",predictors))
-print(test_ggplot)
-
-
-#Y_test<-cbind(data$protein_abundance/min(data$protein_abundance),as.character(data$full_utr))
-
-#full_python_script_test_predict = predict(basic_pls,data_preprocessed[1:100,-1],ncomp=components)
-
-cbind(data_preprocessed[c(4,7),1],as.vector(as.character(data$full_utr))[c(4,7)])
-test_x[1:2]
-
- manual_matrix = X_test
- manual_scale = as.matrix(basic_pls$scale)
- for(i in 1:ncol(manual_matrix)){
-   manual_matrix[,i]=manual_matrix[,i]/manual_scale[i,]
-   
- }
- coef7<-coef(basic_pls,ncomp=components,intercept = TRUE)
- coef_matrix = as.matrix(as.matrix(coef7)[-1,])
-# 
- test_manual = manual_matrix%*%as.matrix(as.matrix(coef7)[-1,])+as.matrix(coef7)[1,]
-# 
-# compare_data = cbind(test_manual,test_x)
-
 coef_data = as.matrix(coef(basic_pls,ncomp=components,intercept = TRUE))
-
 scale_data = cbind(as.matrix(basic_pls$scale),colnames(training_set[,-1]))
 rownames(coef_data) = c("intercept",rownames(scale_data))
 coef_data<-cbind(coef_data,c("intercept",colnames(training_set[,-1])))
 colnames(coef_data) <- c("coefficient","name")
-
 colnames(scale_data) <- c("scale","name")
-
-write.csv(coef_data,file="/home/gpeters/Dropbox/Code/YeastUTR/coefficients.csv",quote=FALSE)
-write.csv(scale_data,file="/home/gpeters/Dropbox/Code/YeastUTR/scales.csv",quote=FALSE)
+#path name where you want to save the coefficient and scale data
+write.csv(coef_data,file=".../coefficients.csv",quote=FALSE)
+write.csv(scale_data,file=".../scales.csv",quote=FALSE)
