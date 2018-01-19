@@ -20,7 +20,7 @@ All calculations were performed on a normal laptop (*i.e.* Dell Latitude). Depen
 
 [yUTR-calculator](Code/yUTR-calculator.py): Python code to develop novel 5'UTRs with a predictive outcome of protein abundances
 
-[yUTR-calculator_reverse_engineering](yUTR-calculator_reverse_engineering.py): Python code to calculate the protein abundance from a given 5'UTR sequence
+[yUTR-calculator_reverse_engineering](Code/yUTR-calculator_reverse_engineering.py): Python code to calculate the protein abundance from a given 5'UTR sequence
 
 ## Calculated data files
 
