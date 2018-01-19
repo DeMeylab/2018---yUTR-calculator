@@ -14,7 +14,7 @@ All calculations were performed on a normal laptop (*i.e.* Dell Latitude). Depen
 
 ## Code
 
-PLS-regression.R: R code used to develop the PLS regression model
+[PLS-regression](Code/PLS-regression.R): R code used to develop the PLS regression model
 
 [UTR_feature_calculation](Code/UTR_feature_calculation.py): Python code used to determine the 13 features in the Dvir UTR data set
 
